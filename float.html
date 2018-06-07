@@ -1,0 +1,383 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>使用 Forth 進行浮點運算 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="logic.html" />
+    
+    
+    <link rel="prev" href="integer.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    簡介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="installation.html">
+            
+                <a href="installation.html">
+            
+                    
+                    安裝 rtForth
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="calculator.html">
+            
+                <a href="calculator.html">
+            
+                    
+                    Forth 計算機
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="integer.html">
+            
+                <a href="integer.html">
+            
+                    
+                    使用 Forth 進行整數運算
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.2" data-path="float.html">
+            
+                <a href="float.html">
+            
+                    
+                    使用 Forth 進行浮點運算
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="logic.html">
+            
+                <a href="logic.html">
+            
+                    
+                    使用 Forth 進行邏輯運算
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >使用 Forth 進行浮點運算</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x4F7F;&#x7528;-forth-&#x9032;&#x884C;&#x6D6E;&#x9EDE;&#x904B;&#x7B97;">&#x4F7F;&#x7528; Forth &#x9032;&#x884C;&#x6D6E;&#x9EDE;&#x904B;&#x7B97;</h1>
+<p>&#x6D6E;&#x9EDE;&#x6578; (floating point) &#x662F;&#x96FB;&#x8166;&#x7528;&#x4F86;&#x8868;&#x793A;&#x5BE6;&#x6578;&#x7684;&#x65B9;&#x5F0F;&#x3002;&#x6D6E;&#x9EDE;&#x6578;&#x4E0D;&#x662F;&#x5BE6;&#x6578;&#xFF0C;&#x53EA;&#x80FD;&#x8FD1;&#x4F3C;&#x5BE6;&#x6578;&#x3002;&#x9019;&#x7522;&#x751F;&#x7A2E;&#x7A2E;&#x554F;&#x984C;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x662F;&#x4F4D;&#x5DE5;&#x4F5C;&#x4E0A;&#x9700;&#x8981;&#x8655;&#x7406;&#x6D6E;&#x9EDE;&#x6578;&#x7684;&#x5DE5;&#x7A0B;&#x5E2B;&#xFF0C;&#x52D9;&#x5FC5;&#x95B1;&#x8B80;&#x4EE5;&#x4E0B;&#x6587;&#x4EF6;&#xFF1A;</p>
+<ul>
+<li>David Goldberg &#x7684; <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html" target="_blank">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a></li>
+</ul>
+<p>Forth &#x63D0;&#x4F9B;&#x6D6E;&#x9EDE;&#x904B;&#x7B97;&#x80FD;&#x529B;&#xFF0C;&#x6D6E;&#x9EDE;&#x904B;&#x7B97;&#x985E;&#x4F3C;&#x6574;&#x6578;&#x904B;&#x7B97;&#xFF0C;&#x4F46;&#x6709;&#x4EE5;&#x4E0B;&#x4E0D;&#x540C;&#xFF0C;</p>
+<ul>
+<li>&#x8F38;&#x5165;&#x6D6E;&#x9EDE;&#x6578;&#x5FC5;&#x9808;&#x6709;&#x5B57;&#x6BCD; <code>e</code>&#x3002;&#x5B57;&#x6BCD; <code>e</code> &#x5F8C;&#x7684;&#x6574;&#x6578;&#x4EE3;&#x8868; 10 &#x7684;&#x6307;&#x6578;&#x3002;&#x82E5;&#x6C92;&#x6709;&#x6574;&#x6578;&#xFF0C;&#x6307;&#x6578;&#x70BA; 0&#x3002;&#x6240;&#x4EE5; <code>1e</code> &#x662F; 1.0 &#xD7; 10<sup>0</sup> &#x4E5F;&#x5C31;&#x662F; 1.0&#x3002;2e3 &#x662F; 2.0 &#xD7; 10<sup>3</sup> &#x4E5F;&#x5C31;&#x662F; 9.0 &#x3002;
+&#x4EE5;&#x4E0B;&#x90FD;&#x662F;&#x6B63;&#x78BA;&#x7684;&#x6D6E;&#x9EDE;&#x8F38;&#x5165;&#xFF1A;<code>1e</code> <code>1.e</code> <code>1.e0</code> <code>+1.23e-1</code> <code>-1.23e+1</code>&#x3002;</li>
+<li>&#x56DB;&#x5247;&#x904B;&#x7B97;&#x6307;&#x4EE4;&#x4EE5; <code>f</code> &#x958B;&#x982D;&#x3002;&#x6BD4;&#x5982; <code>f+</code>&#x3001;<code>f-</code>&#x3001;<code>f*</code>&#x3001;<code>f/</code>&#x3002;</li>
+<li>&#x6C92;&#x6709;&#x548C; <code>mod</code> &#x53CA; <code>/mod</code> &#x5C0D;&#x61C9;&#x7684;&#x6307;&#x4EE4;&#xFF0C;&#x4F46;&#x6709;&#x6C42;&#x6B21;&#x65B9;&#x7684;&#x6307;&#x4EE4; <code>f**</code>&#xFF0C;&#x5176;&#x5806;&#x758A;&#x6548;&#x679C;&#x70BA; ( F: f1 f2 -- f1<sup>f2</sup>)&#x3002;</li>
+<li>&#x8CC7;&#x6599;&#x5806;&#x758A;&#x653E;&#x7684;&#x662F;&#x6574;&#x6578;&#xFF0C;&#x6D6E;&#x9EDE;&#x6578;&#x653E;&#x5728;&#x53E6;&#x4E00;&#x500B;&#x6D6E;&#x9EDE;&#x5806;&#x758A; (floating point stack) &#x4E0A;&#x3002;</li>
+<li>&#x6D6E;&#x9EDE;&#x6578;&#x7684;&#x5806;&#x758A;&#x6548;&#x679C;&#x8868;&#x793A;&#x6CD5;&#x662F; ( F: before -- after )&#x3002;</li>
+</ul>
+<p>&#x8B93;&#x6211;&#x5011;&#x6E2C;&#x8A66;&#x4E00;&#x4E0B;&#x3002;</p>
+<p>&#x4F8B;&#x4E00;&#xFF1A;&#x8F38;&#x5165; <code>1e</code> <code>1.e</code> <code>1.e0</code> <code>+1.23e-1</code> <code>-1.23e+1</code> &#x4E26;&#x4EE5; <code>f.</code> &#x5370;&#x51FA;&#x4F86;&#x3002;</p>
+<pre><code>rf&gt; 1e f.  1.e f.  1.e0 f.  +1.23e-1 f.  -1.23e+1 f.
+1.0000000 1.0000000 1.0000000 0.1230000 -12.3000000  ok
+</code></pre><p>&#x4F8B;&#x4E8C;&#xFF1A;&#x4EE5;&#x6D6E;&#x9EDE;&#x8A08;&#x7B97; 7 + (6 &#xD7; 5<sup>2</sup> + 3)</p>
+<pre><code>rf&gt; 5e 2e f** 6e f* 3e f+ 7e f+ f.
+160.0000000  ok
+</code></pre><p>&#x4F8B;&#x4E09;&#xFF1A;&#x4EE5;&#x6D6E;&#x9EDE;&#x8A08;&#x7B97; 1/(3<sup>2</sup>)</p>
+<pre><code>rf&gt; 1e 3e 2e f** f/  f.
+0.1111111  ok
+</code></pre><h3 id="&#x672C;&#x7BC0;&#x6307;&#x4EE4;&#x96C6;">&#x672C;&#x7BC0;&#x6307;&#x4EE4;&#x96C6;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x6307;&#x4EE4;</th>
+<th>&#x5806;&#x758A;&#x6548;&#x679C;</th>
+<th>&#x8AAA;&#x660E;</th>
+<th>&#x53E3;&#x8A9E;&#x5538;&#x6CD5;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>f.</code></td>
+<td>( F:&#xA0; f -- )</td>
+<td>&#x5370;&#x51FA;&#x6D6E;&#x9EDE;&#x5806;&#x758A;&#x4E0A;&#x6700;&#x5F8C;&#x7684;&#x6D6E;&#x9EDE;&#x6578;&#xFF0C;&#x4E26;&#x5C07;&#x5B83;&#x5F9E;&#x5806;&#x758A;&#x4E0A;&#x79FB;&#x9664;</td>
+<td>f-dot</td>
+</tr>
+<tr>
+<td><code>f+</code></td>
+<td>( F:&#xA0; f1 f2 -- f1+f2 )</td>
+<td>&#x5C07;&#x6D6E;&#x9EDE;&#x5806;&#x758A;&#x4E0A;&#x7684; f1 &#x52A0;&#x4E0A; f2&#xFF0C;&#x5C07;&#x7D50;&#x679C;&#x653E;&#x56DE;&#x6D6E;&#x9EDE;&#x5806;&#x758A;</td>
+<td>f-plus</td>
+</tr>
+<tr>
+<td><code>f-</code></td>
+<td>( F:&#xA0; f1 f2 -- f1-f2 )</td>
+<td>&#x5C07;&#x6D6E;&#x9EDE;&#x5806;&#x758A;&#x4E0A;&#x7684; f1 &#x6E1B;&#x53BB; f2&#xFF0C;&#x5C07;&#x7D50;&#x679C;&#x653E;&#x56DE;&#x6D6E;&#x9EDE;&#x5806;&#x758A;</td>
+<td>f-minus</td>
+</tr>
+<tr>
+<td><code>f*</code></td>
+<td>( F:&#xA0; f1 f2 -- f1*f2 )</td>
+<td>&#x5C07;&#x6D6E;&#x9EDE;&#x5806;&#x758A;&#x4E0A;&#x7684; f1 &#x4E58;&#x4EE5; f2&#xFF0C;&#x5C07;&#x7D50;&#x679C;&#x653E;&#x56DE;&#x6D6E;&#x9EDE;&#x5806;&#x758A;</td>
+<td>f-star</td>
+</tr>
+<tr>
+<td><code>f/</code></td>
+<td>( F:&#xA0; f1 f2 -- f1/f2 )</td>
+<td>&#x5C07;&#x6D6E;&#x9EDE;&#x5806;&#x758A;&#x4E0A;&#x7684; f1 &#x9664;&#x4EE5; f2&#xFF0C;&#x5C07;&#x7D50;&#x679C;&#x653E;&#x56DE;&#x6D6E;&#x9EDE;&#x5806;&#x758A;</td>
+<td>f-slash</td>
+</tr>
+<tr>
+<td><code>f**</code></td>
+<td>( F:&#xA0; f1 f2 -- f1<sup>f2</sup>)</td>
+<td>&#x6C42;&#x6D6E;&#x9EDE;&#x5806;&#x758A;&#x4E0A;&#x7684; f1 &#x7684; f2 &#x6B21;&#x65B9;&#xFF0C;&#x5C07;&#x7D50;&#x679C;&#x653E;&#x56DE;&#x6D6E;&#x9EDE;&#x5806;&#x758A;</td>
+<td>f-star-star</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="&#x66F4;&#x591A;&#x7684;&#x6D6E;&#x9EDE;&#x6578;&#x904B;&#x7B97;">&#x66F4;&#x591A;&#x7684;&#x6D6E;&#x9EDE;&#x6578;&#x904B;&#x7B97;</h2>
+<p>TODO</p>
+<hr>
+<h2 id="&#x672C;&#x7AE0;&#x91CD;&#x9EDE;&#x6574;&#x7406;">&#x672C;&#x7AE0;&#x91CD;&#x9EDE;&#x6574;&#x7406;</h2>
+<ul>
+<li>&#x6D6E;&#x9EDE;&#x6578; (floating point)</li>
+</ul>
+<hr>
+<h2 id="&#x672C;&#x7AE0;&#x6307;&#x4EE4;&#x96C6;">&#x672C;&#x7AE0;&#x6307;&#x4EE4;&#x96C6;</h2>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="integer.html" class="navigation navigation-prev " aria-label="Previous page: 使用 Forth 進行整數運算">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="logic.html" class="navigation navigation-next " aria-label="Next page: 使用 Forth 進行邏輯運算">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"使用 Forth 進行浮點運算","level":"1.3.2","depth":2,"next":{"title":"使用 Forth 進行邏輯運算","level":"1.3.3","depth":2,"path":"logic.md","ref":"logic.md","articles":[]},"previous":{"title":"使用 Forth 進行整數運算","level":"1.3.1","depth":2,"path":"integer.md","ref":"integer.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"float.md","mtime":"2018-06-07T20:50:29.179Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-07T20:51:37.575Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
